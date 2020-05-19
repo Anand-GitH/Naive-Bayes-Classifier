@@ -3,6 +3,7 @@ from genericcalc import summary_dataset
 from genericcalc import predict_class
 from genericcalc import classifaccuracy
 from genericcalc import classiferror
+from genericcalc import znormal_row
 from genericcalc import znormal
 from genericcalc import predict_class_multiv
 
@@ -37,7 +38,7 @@ def main():
 #########################################################################
     normdf=znormal(df1)
     summ=summary_dataset(normdf[0:100])
-    predict_data=df1[100:]
+    predict_data=normdf[100:]
     predict_data=predict_data.assign(PredictedValC1=predict_data["Var1"].apply(lambda x:predict_class(x,summ,5)))
     predict_data=predict_data.assign(PredictedValC2=predict_data["Var2"].apply(lambda x:predict_class(x,summ,5)))
     predict_data=predict_data.assign(PredictedValC3=predict_data["Var3"].apply(lambda x:predict_class(x,summ,5)))

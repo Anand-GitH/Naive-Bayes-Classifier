@@ -15,7 +15,6 @@ def summary_dataset(dataframe):
     dsummary=[]
     for col in dataframe.columns:
         dsummary.append([calcmean(dataframe[col]), calcstd(dataframe[col]), len(dataframe[col])])
-        
     return dsummary
 
 def znormal(df):
@@ -30,8 +29,22 @@ def znormal(df):
     
     return zdf
 
+def znormal_row(df):
+    zdf=pd.DataFrame()
+    tempdf=pd.DataFrame()
+    df1=df.transpose()
+    summ=summary_dataset(df1)
+    colcount=0
+    for col in df1.columns:
+        tempdf=tempdf.assign(colnam=df1[col].apply(lambda x:((x-summ[colcount][0])/summ[colcount][1])))
+        zdf[col]=tempdf["colnam"]
+        colcount+=1
+    
+    return zdf.transpose()
+
+
 def calc_probguasdist(x,mu,sigma):
-    epow=(-(x-mu)**2/(2*sigma**2))
+    epow=(-(x-mu)**2/(2*(sigma**2)))
     denom=sqrt(2*pi*(sigma**2))
     prob=float(exp(epow)/denom)
     return prob
